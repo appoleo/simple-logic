@@ -1,3 +1,4 @@
+package com.ami.study.logic;
 
 /**
  * How do I generate a 6-bit random number
