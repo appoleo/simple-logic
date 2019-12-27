@@ -1,5 +1,9 @@
 package com.ami.study.logic;
 
+import org.junit.Test;
+
+import java.util.*;
+
 /**
  * <p>1. 二分查找也称折半查找，每次都能将查找区间缩小为原来的一半，所以这种算法
  * 的时间复杂度为O（logN）
@@ -83,4 +87,39 @@ public class Dichotomy {
         }
         return mid;
     }
+
+    /**
+     * int数组二分查找
+     *
+     * @param intsArray 传入的int数组
+     * @param des       传入要查找的值
+     * @return 二分查找结果数组的行号，未找到返回-1
+     */
+    public static int binarySearch(int[] intsArray, int des) {
+        TreeMap<Integer, Integer> treeMap = new TreeMap<>();
+        for (int i = 0; i < intsArray.length; i++) {
+            treeMap.put(intsArray[i], i);
+        }
+        List<Map.Entry<Integer, Integer>> list = new ArrayList<>(treeMap.entrySet());
+        int begin = 0;
+        int end = intsArray.length - 1;
+        while (begin <= end) {
+            int middle = begin + (end - begin) / 2;
+            if (list.get(middle).getKey() == des) {
+                return list.get(middle).getValue();
+            } else if (list.get(middle).getKey() < des) {
+                begin = middle + 1;
+            } else {
+                end = middle - 1;
+            }
+        }
+        return -1;
+    }
+
+    @Test
+    public void testBinarySearch() {
+        int[] intsArray = {222, 123, 23, 543, 199};
+        System.out.println(binarySearch(intsArray, 147));
+    }
+
 }
