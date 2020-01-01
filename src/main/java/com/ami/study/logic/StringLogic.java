@@ -48,10 +48,4 @@ public class StringLogic {
         System.out.println(replace("aabbccdd", "bb", "dd"));
     }
 
-    @Test
-    public void testReplaceAll() {
-        String text = "欢迎<name><sex>入住英卓未来公寓,我是您的小管家,您可以叫我<智能音箱>,当您需要对房间内的智能设备进行控制时，您可以对我说，<智能音箱>，打开电影模式，您就会进入电影模式，您也可以对我说，<智能音箱>，打开卫生间灯，或者对我说，<智能音箱>，打开投影幕布，想要了解更多好玩的功能，您可以查看房间内的语音提示牌。";
-        System.out.println(text.replaceAll("<智能音箱>", "小度小度"));
-    }
-
 }
