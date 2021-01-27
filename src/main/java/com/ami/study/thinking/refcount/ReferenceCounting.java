@@ -22,6 +22,7 @@ class Composing {
         shared.dispose();
     }
 
+    @Override
     public String toString() {
         return "Composing " + id;
     }
@@ -48,6 +49,7 @@ class Shared {
         }
     }
 
+    @Override
     public String toString() {
         return "Shared " + id;
     }
