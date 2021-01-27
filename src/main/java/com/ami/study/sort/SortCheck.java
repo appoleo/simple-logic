@@ -15,7 +15,9 @@ public class SortCheck {
         int[] arr = getRandomArr();
         int[] arrCopy = new int[arr.length];
         System.arraycopy(arr, 0, arrCopy, 0, arr.length);
-        BubbleSort.sort(arr);
+        // SelectionSort.sort(arr);
+        // BubbleSort.sort(arr);
+        InsertionSort.sort(arr);
         Arrays.sort(arrCopy);
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] != arrCopy[i]) {
