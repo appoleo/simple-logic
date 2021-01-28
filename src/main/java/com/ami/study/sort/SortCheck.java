@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
+ * 排序检测
+ *
  * @author wangchendong
  * @date 2021/01/27
  */
@@ -17,7 +19,10 @@ public class SortCheck {
         System.arraycopy(arr, 0, arrCopy, 0, arr.length);
         // SelectionSort.sort(arr);
         // BubbleSort.sort(arr);
-        InsertionSort.sort(arr);
+        // BubbleSort.sortOptimize(arr);
+        // InsertionSort.sort(arr);
+        ShellSort.sort(arr);
+
         Arrays.sort(arrCopy);
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] != arrCopy[i]) {

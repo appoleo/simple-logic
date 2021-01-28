@@ -1,6 +1,8 @@
 package com.ami.study.sort;
 
 /**
+ * 排序公共方法
+ *
  * @author wangchendong
  * @date 2021/01/27
  */

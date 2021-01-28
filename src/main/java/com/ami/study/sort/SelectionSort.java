@@ -14,6 +14,11 @@ public class SelectionSort extends MySort {
         print(arr);
     }
 
+    /**
+     * O(n^2)
+     *
+     * @param arr array for sort
+     */
     static void sort(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
             int minPos = i;
@@ -26,6 +31,11 @@ public class SelectionSort extends MySort {
         }
     }
 
+    /**
+     * 优化后可节省一半时间
+     *
+     * @param arr array for sort
+     */
     static void sortOptimize(int[] arr) {
         for (int i = 0; i < arr.length / 2; i++) {
             int minPos = i;
