@@ -21,7 +21,8 @@ public class SortCheck {
         // BubbleSort.sort(arr);
         // BubbleSort.sortOptimize(arr);
         // InsertionSort.sort(arr);
-        ShellSort.sort(arr);
+        // ShellSort.sort(arr);
+        MergeSort.sort(arr);
 
         Arrays.sort(arrCopy);
         for (int i = 0; i < arr.length; i++) {
