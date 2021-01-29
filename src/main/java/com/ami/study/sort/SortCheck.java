@@ -13,6 +13,11 @@ import java.util.Random;
  */
 public class SortCheck {
 
+    /**
+     * 数据量级
+     */
+    private static final int MAGNITUDE = 100000;
+
     public static void main(String[] args) {
         int[] arr = getRandomArr();
         int[] arrCopy = new int[arr.length];
@@ -35,10 +40,10 @@ public class SortCheck {
     }
 
     private static int[] getRandomArr() {
-        int[] arr = new int[100000];
+        int[] arr = new int[MAGNITUDE];
         Random random = new Random();
-        for (int i = 0; i < 100000; i++) {
-            arr[i] = random.nextInt(100000);
+        for (int i = 0; i < MAGNITUDE; i++) {
+            arr[i] = random.nextInt(MAGNITUDE);
         }
         return arr;
     }
