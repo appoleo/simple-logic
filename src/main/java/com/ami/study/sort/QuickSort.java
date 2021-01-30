@@ -4,7 +4,7 @@ package com.ami.study.sort;
  * @author wangchendong
  * @date 2021/01/29
  */
-public class QuickSort extends MySort{
+public class QuickSort extends MySort {
 
     public static void main(String[] args) {
         int[] arr = {3, 6, 8, 2, 4, 1, 9, 5, 7, 10};
@@ -16,6 +16,13 @@ public class QuickSort extends MySort{
         quickSort(arr, 0, arr.length - 1);
     }
 
+    /**
+     * 时间复杂度O(N*LogN)
+     *
+     * @param arr        array to sort
+     * @param leftBound  左边界
+     * @param rightBound 右边界
+     */
     static void quickSort(int[] arr, int leftBound, int rightBound) {
         if (leftBound >= rightBound) return;
         int pivot = quick(arr, leftBound, rightBound);
@@ -30,7 +37,7 @@ public class QuickSort extends MySort{
         while (left <= right) {
             while (left <= right && arr[left] <= pivot) left++;
             while (left <= right && arr[right] > pivot) right--;
-            if (left < right)swap(arr, left, right);
+            if (left < right) swap(arr, left, right);
         }
         swap(arr, left, rightBound);
         return left;
