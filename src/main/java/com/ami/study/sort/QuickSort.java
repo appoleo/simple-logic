@@ -18,6 +18,7 @@ public class QuickSort extends MySort {
 
     /**
      * 时间复杂度O(N*LogN)
+     * 空间复杂度O(LogN)
      *
      * @param arr        array to sort
      * @param leftBound  左边界
