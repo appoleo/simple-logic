@@ -20,7 +20,7 @@ public class CountSort extends MySort {
     }
 
     /**
-     * todo 实现稳定性
+     * O(n + k)
      *
      * @param arr array to sort
      * @return sorted
@@ -42,22 +42,34 @@ public class CountSort extends MySort {
         return result;
     }
 
-    static int findMin(int[] arr) {
-        int min = 0;
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i] < arr[min]) min = i;
-        }
-        return arr[min];
-    }
+    /**
+     * 稳定的
+     *
+     * @param arr array to sort
+     * @return sorted
+     */
+    static int[] stableSort(int[] arr) {
+        // 计算最小边界和区间
+        int max = findMax(arr);
+        int min = findMin(arr);
+        int length = max - min + 1;
 
-    static int findMax(int[] arr) {
-        int max = 0;
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i] > arr[max]) max = i;
+        int[] result = new int[arr.length];
+        int[] count = new int[length];
+        for (int item : arr) {
+            count[item - min]++;
         }
-        return arr[max];
-    }
+        // 累加为元素最后出现的位置
+        for (int i = 1; i < count.length; i++) {
+            count[i] += count[i - 1];
+        }
 
+        for (int i = arr.length - 1; i >= 0; i--) {
+            result[--count[arr[i] - min]] = arr[i];
+        }
+
+        return result;
+    }
 
     @Test
     public void testCountSort() {
@@ -66,7 +78,7 @@ public class CountSort extends MySort {
         for (int i = 0; i < arr.length; i++) {
             arr[i] = random.nextInt(10) + 8;
         }
-        int[] result = sort(arr);
+        int[] result = stableSort(arr);
         Arrays.sort(arr);
 
         boolean same = true;

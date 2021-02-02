@@ -19,4 +19,20 @@ public class MySort {
             System.out.print(item + " ");
         }
     }
+
+    static int findMin(int[] arr) {
+        int min = 0;
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] < arr[min]) min = i;
+        }
+        return arr[min];
+    }
+
+    static int findMax(int[] arr) {
+        int max = 0;
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] > arr[max]) max = i;
+        }
+        return arr[max];
+    }
 }
