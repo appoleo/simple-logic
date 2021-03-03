@@ -22,12 +22,12 @@ public class SortCheck {
         int[] arr = getRandomArr();
         int[] arrCopy = new int[arr.length];
         System.arraycopy(arr, 0, arrCopy, 0, arr.length);
-        // SelectionSort.sort(arr);
+        SelectionSort.sort(arr);
         // BubbleSort.sort(arr);
         // BubbleSort.sortOptimize(arr);
         // InsertionSort.sort(arr);
         // ShellSort.sort(arr);
-        MergeSort.sort(arr);
+        // MergeSort.sort(arr);
 
         Arrays.sort(arrCopy);
         for (int i = 0; i < arr.length; i++) {
