@@ -56,6 +56,39 @@ public class BaseLogic {
         return null;
     }
 
+    /**
+     * 两个链表是否相交
+     */
+    private static boolean isIntersect(Node<Integer> node1, Node<Integer> node2) {
+        if (node1 == null || node2 == null) return false;
+        // 先判断是否有环
+        boolean ring1 = isRing(node1);
+        boolean ring2 = isRing(node2);
+        if (ring1 != ring2) return false;
+        // 根据是否有环分别做判断
+        if (ring1) {
+            // 如果有环，入环节点相同，则true，如果环相同，则true
+            Node<Integer> integerNode1 = nodeEnteringRing(node1);
+            Node<Integer> integerNode2 = nodeEnteringRing(node2);
+            if (integerNode1 == integerNode2) return true;
+            Node<Integer> next = integerNode1;
+            assert next != null;
+            while (next.next != integerNode2) {
+                next = next.next;
+                if (next == integerNode1) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            // 如果没有环，判断最后一个节点是否相等
+            Node<Integer> last1 = node1, last2 = node2;
+            while (last1.next != null) last1 = last1.next;
+            while (last2.next != null) last2 = last2.next;
+            return last1 == last2;
+        }
+    }
+
 
     private static Node<Integer> initNode() {
         Node<Integer> node10 = new Node<>(6, null);
