@@ -5,17 +5,66 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 二叉树
+ *
  * @author wangchendong
  * @date 2021/03/09
  */
 public class BinaryTree {
 
+    public static void main(String[] args) {
+        Node head = initBinaryTree();
+        prefixPrint(head);
+        System.out.println();
+        midPrint(head);
+        System.out.println();
+        suffixPrint(head);
+    }
+
+    /**
+     * 前序打印 - 递归
+     *
+     * @param head 头节点
+     */
+    private static void prefixPrint(Node head) {
+        if (head == null) return;
+        System.out.print(head.value + " ");
+        prefixPrint(head.left);
+        prefixPrint(head.right);
+    }
+
+    /**
+     * 中序打印 - 递归
+     *
+     * @param head 头节点
+     */
+    private static void midPrint(Node head) {
+        if (head == null) return;
+        midPrint(head.left);
+        System.out.print(head.value + " ");
+        midPrint(head.right);
+    }
+
+    /**
+     * 中序打印 - 递归
+     *
+     * @param head 头节点
+     */
+    private static void suffixPrint(Node head) {
+        if (head == null) return;
+        suffixPrint(head.left);
+        suffixPrint(head.right);
+        System.out.print(head.value + " ");
+    }
 
     private static Node initBinaryTree() {
-
-
-
-        return new Node();
+        Node node4 = new Node(4, null, null);
+        Node node5 = new Node(5, null, null);
+        Node node6 = new Node(6, null, null);
+        Node node7 = new Node(7, null, null);
+        Node node2 = new Node(2, node4, node5);
+        Node node3 = new Node(3, node6, node7);
+        return new Node(1, node2, node3);
     }
 
     @Data
