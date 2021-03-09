@@ -118,8 +118,9 @@ public class Dichotomy {
 
     @Test
     public void testBinarySearch() {
-        int[] intsArray = {222, 123, 23, 543, 199};
-        System.out.println(binarySearch(intsArray, 147));
+        // int[] intsArray = {222, 123, 23, 543, 199};
+        // System.out.println(binarySearch(intsArray, 147));
+        System.out.println(sqrt2(0.0000001));
     }
 
 }

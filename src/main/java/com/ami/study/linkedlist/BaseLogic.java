@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 public class BaseLogic {
 
     public static void main(String[] args) {
-        Node<Integer> head = initNode();
+        Node head = initNode();
         // print(head);
         System.out.println();
         System.out.println("is ring: " + isRing(head));
-        Node<Integer> enteringNode = nodeEnteringRing(head);
+        Node enteringNode = nodeEnteringRing(head);
         System.out.println("node entering ring: " + (enteringNode == null ? null : enteringNode.getValue()));
     }
 
@@ -24,8 +24,8 @@ public class BaseLogic {
      *
      * @return 有 true  没有 false
      */
-    private static <T> boolean isRing(Node<T> head) {
-        Node<T> slow = head, fast = head;
+    private static  boolean isRing(Node head) {
+        Node slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
@@ -39,8 +39,8 @@ public class BaseLogic {
      *
      * @return 如果有环，返回入环节点，否则返回null
      */
-    private static <T> Node<T> nodeEnteringRing(Node<T> head) {
-        Node<T> slow = head, fast = head;
+    private static  Node nodeEnteringRing(Node head) {
+        Node slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
@@ -59,7 +59,7 @@ public class BaseLogic {
     /**
      * 两个链表是否相交
      */
-    private static boolean isIntersect(Node<Integer> node1, Node<Integer> node2) {
+    private static boolean isIntersect(Node node1, Node node2) {
         if (node1 == null || node2 == null) return false;
         // 先判断是否有环
         boolean ring1 = isRing(node1);
@@ -68,10 +68,10 @@ public class BaseLogic {
         // 根据是否有环分别做判断
         if (ring1) {
             // 如果有环，入环节点相同，则true，如果环相同，则true
-            Node<Integer> integerNode1 = nodeEnteringRing(node1);
-            Node<Integer> integerNode2 = nodeEnteringRing(node2);
+            Node integerNode1 = nodeEnteringRing(node1);
+            Node integerNode2 = nodeEnteringRing(node2);
             if (integerNode1 == integerNode2) return true;
-            Node<Integer> next = integerNode1;
+            Node next = integerNode1;
             assert next != null;
             while (next.next != integerNode2) {
                 next = next.next;
@@ -82,7 +82,7 @@ public class BaseLogic {
             return true;
         } else {
             // 如果没有环，判断最后一个节点是否相等
-            Node<Integer> last1 = node1, last2 = node2;
+            Node last1 = node1, last2 = node2;
             while (last1.next != null) last1 = last1.next;
             while (last2.next != null) last2 = last2.next;
             return last1 == last2;
@@ -90,23 +90,23 @@ public class BaseLogic {
     }
 
 
-    private static Node<Integer> initNode() {
-        Node<Integer> node10 = new Node<>(6, null);
-        Node<Integer> node9 = new Node<>(7, node10);
-        Node<Integer> node8 = new Node<>(10, node9);
-        Node<Integer> node7 = new Node<>(5, node8);
-        Node<Integer> node6 = new Node<>(3, node7);
-        Node<Integer> node5 = new Node<>(2, node6);
-        Node<Integer> node4 = new Node<>(6, node5);
-        Node<Integer> node3 = new Node<>(9, node4);
-        Node<Integer> node2 = new Node<>(1, node3);
+    private static Node initNode() {
+        Node node10 = new Node(6, null);
+        Node node9 = new Node(7, node10);
+        Node node8 = new Node(10, node9);
+        Node node7 = new Node(5, node8);
+        Node node6 = new Node(3, node7);
+        Node node5 = new Node(2, node6);
+        Node node4 = new Node(6, node5);
+        Node node3 = new Node(9, node4);
+        Node node2 = new Node(1, node3);
         node10.next = node7;
-        return new Node<>(4, node2);
+        return new Node(4, node2);
     }
 
-    private static <T> void print(Node<T> head) {
+    private static  void print(Node head) {
         if (head == null) return;
-        Node<T> pos = head;
+        Node pos = head;
         while (pos != null) {
             System.out.print(pos.value + " ");
             pos = pos.next;
@@ -116,10 +116,10 @@ public class BaseLogic {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    static class Node<T> {
+    static class Node {
 
-        private T value;
+        private Integer value;
 
-        private Node<T> next;
+        private Node next;
     }
 }
