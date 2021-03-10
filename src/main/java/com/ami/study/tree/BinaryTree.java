@@ -28,6 +28,9 @@ public class BinaryTree {
         System.out.print("前序-栈：");
         prefixPrintWithStack(head);
         System.out.println();
+        System.out.print("中序-栈：");
+        midPrintWithStack(head);
+        System.out.println();
         System.out.print("后序-栈：");
         suffixPrintWithStack(head);
     }
@@ -94,15 +97,14 @@ public class BinaryTree {
     private static void midPrintWithStack(Node head) {
         if (head != null) {
             Stack<Node> stack = new Stack<>();
-            stack.push(head);
             Node h = head;
             while (!stack.isEmpty() || h != null) {
-                if (h.left != null) {
-                    stack.push(h.left);
+                if (h != null) {
+                    stack.push(h);
                     h = h.left;
                 } else {
                     Node pop = stack.pop();
-                    System.out.println(pop.value + " ");
+                    System.out.print(pop.value + " ");
                     h = pop.right;
                 }
             }
