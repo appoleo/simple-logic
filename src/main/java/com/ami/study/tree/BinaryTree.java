@@ -16,13 +16,20 @@ public class BinaryTree {
 
     public static void main(String[] args) {
         Node head = initBinaryTree();
+        System.out.print("前序-递：");
         prefixPrint(head);
         System.out.println();
+        System.out.print("中序-递：");
         midPrint(head);
         System.out.println();
+        System.out.print("后序-递：");
         suffixPrint(head);
         System.out.println();
+        System.out.print("前序-栈：");
         prefixPrintWithStack(head);
+        System.out.println();
+        System.out.print("后序-栈：");
+        suffixPrintWithStack(head);
     }
 
     /**
@@ -75,6 +82,37 @@ public class BinaryTree {
                 System.out.print(pop.value + " ");
                 if (pop.right != null) stack.push(pop.right);
                 if (pop.left != null) stack.push(pop.left);
+            }
+        }
+    }
+
+    /**
+     * 中序打印 - 栈
+     *
+     * @param head 头节点
+     */
+    private static void midPrintWithStack(Node head) {
+
+    }
+
+    /**
+     * 后序打印 - 栈
+     *
+     * @param head 头节点
+     */
+    private static void suffixPrintWithStack(Node head) {
+        if (head != null) {
+            Stack<Node> stack1 = new Stack<>();
+            Stack<Node> stack2 = new Stack<>();
+            stack1.push(head);
+            while (!stack1.isEmpty()) {
+                Node pop = stack1.pop();
+                stack2.push(pop);
+                if (pop.left != null) stack1.push(pop.left);
+                if (pop.right != null) stack1.push(pop.right);
+            }
+            while (!stack2.isEmpty()) {
+                System.out.print(stack2.pop().value + " ");
             }
         }
     }
