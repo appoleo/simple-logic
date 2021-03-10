@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Stack;
+
 /**
  * 二叉树
  *
@@ -19,6 +21,8 @@ public class BinaryTree {
         midPrint(head);
         System.out.println();
         suffixPrint(head);
+        System.out.println();
+        prefixPrintWithStack(head);
     }
 
     /**
@@ -55,6 +59,24 @@ public class BinaryTree {
         suffixPrint(head.left);
         suffixPrint(head.right);
         System.out.print(head.value + " ");
+    }
+
+    /**
+     * 前序打印 - 栈
+     *
+     * @param head 头节点
+     */
+    private static void prefixPrintWithStack(Node head) {
+        if (head != null) {
+            Stack<Node> stack = new Stack<>();
+            stack.push(head);
+            while (!stack.isEmpty()) {
+                Node pop = stack.pop();
+                System.out.print(pop.value + " ");
+                if (pop.right != null) stack.push(pop.right);
+                if (pop.left != null) stack.push(pop.left);
+            }
+        }
     }
 
     private static Node initBinaryTree() {
