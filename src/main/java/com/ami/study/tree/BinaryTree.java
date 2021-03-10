@@ -92,7 +92,21 @@ public class BinaryTree {
      * @param head 头节点
      */
     private static void midPrintWithStack(Node head) {
-
+        if (head != null) {
+            Stack<Node> stack = new Stack<>();
+            stack.push(head);
+            Node h = head;
+            while (!stack.isEmpty() || h != null) {
+                if (h.left != null) {
+                    stack.push(h.left);
+                    h = h.left;
+                } else {
+                    Node pop = stack.pop();
+                    System.out.println(pop.value + " ");
+                    h = pop.right;
+                }
+            }
+        }
     }
 
     /**
