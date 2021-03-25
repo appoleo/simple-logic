@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 /**
  * @author wangchendong
  * @date 2021/03/03
@@ -24,7 +26,7 @@ public class BaseLogic {
      *
      * @return 有 true  没有 false
      */
-    private static  boolean isRing(Node head) {
+    private static boolean isRing(Node head) {
         Node slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
@@ -39,7 +41,7 @@ public class BaseLogic {
      *
      * @return 如果有环，返回入环节点，否则返回null
      */
-    private static  Node nodeEnteringRing(Node head) {
+    private static Node nodeEnteringRing(Node head) {
         Node slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
@@ -89,6 +91,56 @@ public class BaseLogic {
         }
     }
 
+    /**
+     * 获取相交链表的交点
+     *
+     * @return 交点
+     */
+    public static Node intersect(Node node1, Node node2) {
+        if (node1 == node2) return node1;
+        if (node1 == null || node2 == null) return null;
+        Node end = null;
+        // 是否有环
+        boolean ring = isRing(node1);
+        if (ring) {
+            Node nodeEnteringRing1 = nodeEnteringRing(node1);
+            Node nodeEnteringRing2 = nodeEnteringRing(node2);
+            // 环内相交
+            if (nodeEnteringRing1 != nodeEnteringRing2) return nodeEnteringRing1;
+            // 环外相交
+            end = Objects.requireNonNull(nodeEnteringRing1).next;
+        }
+        Node poi1 = node1;
+        Node poi2 = node2;
+        while (poi1.next != end && poi2.next != end) {
+            poi1 = poi1.next;
+            poi2 = poi2.next;
+            if (poi1 == poi2) return poi1;
+        }
+        if (poi1 == end) {
+            poi1 = node2;
+            while (poi2.next != end) {
+                poi2 = poi2.next;
+                poi1 = poi1.next;
+            }
+            poi2 = poi1;
+            poi1 = node1;
+        } else {
+            poi2 = node1;
+            while (poi1.next != end) {
+                poi2 = poi2.next;
+                poi1 = poi1.next;
+            }
+            poi1 = poi2;
+            poi2 = node2;
+        }
+        while (poi1 != poi2) {
+            poi1 = poi1.next;
+            poi2 = poi2.next;
+        }
+        return poi1;
+    }
+
 
     private static Node initNode() {
         Node node10 = new Node(6, null);
@@ -104,7 +156,7 @@ public class BaseLogic {
         return new Node(4, node2);
     }
 
-    private static  void print(Node head) {
+    private static void print(Node head) {
         if (head == null) return;
         Node pos = head;
         while (pos != null) {
