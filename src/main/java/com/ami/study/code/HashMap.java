@@ -38,7 +38,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
     /**
-     * 链表转红黑树长度阈值，当插入节点后，链表长度大于等于该值时，进行转换
+     * 链表转红黑树长度阈值，当插入节点后，链表长度大于该值时，进行转换
      */
     static final int TREEIFY_THRESHOLD = 8;
 
@@ -336,14 +336,18 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         Node<K, V> first, e;
         int n;
         K k;
+        // 当集合不为null，并且长度大于0，并且集合中该位置上的节点不为null
         if ((tab = table) != null && (n = tab.length) > 0 &&
                 (first = tab[(n - 1) & hash]) != null) {
+            // 如果该位置第一个节点hash值相同，并且地址值相等或equals，则直接返回该节点
             if (first.hash == hash && // always check first node
                     ((k = first.key) == key || (key != null && key.equals(k))))
                 return first;
             if ((e = first.next) != null) {
+                // 如果是树，则在树上找
                 if (first instanceof TreeNode)
                     return ((TreeNode<K, V>) first).getTreeNode(hash, key);
+                // 如果是链表，则遍历链表查找
                 do {
                     if (e.hash == hash &&
                             ((k = e.key) == key || (key != null && key.equals(k))))
@@ -397,22 +401,29 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         Node<K, V>[] tab;
         Node<K, V> p;
         int n, i;
+        // 如果集合为null或者集合长度为0，则初始化集合
         if ((tab = table) == null || (n = tab.length) == 0)
             n = (tab = resize()).length;
+        // 如果通过key计算出来的位置没有节点，则直接在该位置创建节点
         if ((p = tab[i = (n - 1) & hash]) == null)
             tab[i] = newNode(hash, key, value, null);
         else {
             Node<K, V> e;
             K k;
+            // 如果该位置的key就是待存的key，则将该节点赋值给e
             if (p.hash == hash &&
                     ((k = p.key) == key || (key != null && key.equals(k))))
                 e = p;
+            // 如果该位置是树，则向树上插入节点
             else if (p instanceof TreeNode)
                 e = ((TreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);
+            // 链表
             else {
+                // 遍历链表，如果key相同，则将该节点赋值给e，否则将该节点插入到链表结尾（尾插法）
                 for (int binCount = 0; ; ++binCount) {
                     if ((e = p.next) == null) {
                         p.next = newNode(hash, key, value, null);
+                        // 如果插入后链表的长度大于树化阈值（8），则转化为红黑树
                         if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
                             treeifyBin(tab, hash);
                         break;
@@ -425,16 +436,20 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
             }
             if (e != null) { // existing mapping for key
                 V oldValue = e.value;
+                // 如果设置覆盖原值或者原值为null，则重新赋值
                 if (!onlyIfAbsent || oldValue == null)
                     e.value = value;
+                // 该方法预留给LinkedHashMap，HashMap中为空实现
                 afterNodeAccess(e);
                 return oldValue;
             }
         }
+        // 并发计数器
         ++modCount;
+        // 当节点数大于扩容阈值时进行扩容
         if (++size > threshold)
             resize();
-        // 这个函数只在LinkedHashMap中用到, 这里是空函数
+        // 该方法预留给LinkedHashMap，HashMap中为空实现
         afterNodeInsertion(evict);
         return null;
     }
