@@ -1,11 +1,13 @@
 package com.ami.study.code;
 
+import sun.misc.SharedSecrets;
+
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -15,7 +17,7 @@ import java.util.function.Function;
  * @author wangchendong
  * @date 2021/03/31
  */
-@SuppressWarnings("FinalStaticMethod")
+@SuppressWarnings({"FinalStaticMethod", "ForLoopReplaceableByForEach", "DuplicatedCode", "SameParameterValue"})
 public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Cloneable, Serializable {
 
     private static final long serialVersionUID = 362498820763181265L;
@@ -259,6 +261,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      * @param m the map whose mappings are to be placed in this map
      * @throws NullPointerException if the specified map is null
      */
+    @SuppressWarnings("unused")
     public HashMap(Map<? extends K, ? extends V> m) {
         this.loadFactor = DEFAULT_LOAD_FACTOR;
         putMapEntries(m, false);
@@ -268,13 +271,16 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         int s = m.size();
         if (s > 0) {
             if (table == null) { // pre-size
+                // 如果原集合为空，则需初始化阈值，将s除以负载因子+1可以得到HashMap所需的最大负载容量
                 float ft = ((float) s / loadFactor) + 1.0F;
                 int t = ((ft < (float) MAXIMUM_CAPACITY) ?
                         (int) ft : MAXIMUM_CAPACITY);
                 if (t > threshold)
                     threshold = tableSizeFor(t);
             } else if (s > threshold)
+                // 如果原集合不为空，而且要存放的节点个数大于阈值，则进行扩容
                 resize();
+            // 将节点依次添加到集合中
             for (Map.Entry<? extends K, ? extends V> e : m.entrySet()) {
                 K key = e.getKey();
                 V value = e.getValue();
@@ -382,7 +388,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      * @param hash         hash for key
      * @param key          the key
      * @param value        the value to put
-     * @param onlyIfAbsent if true, don't change existing value
+     * @param onlyIfAbsent 决定待存储的key已经存在的情况下，要不要用新值覆盖原有的value, 如果为true, 则保留原有值, false则覆盖原有值
      * @param evict        if false, the table is in creation mode.
      * @return previous value, or null if none
      */
@@ -428,6 +434,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         ++modCount;
         if (++size > threshold)
             resize();
+        // 这个函数只在LinkedHashMap中用到, 这里是空函数
         afterNodeInsertion(evict);
         return null;
     }
@@ -465,7 +472,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
                     (int) ft : Integer.MAX_VALUE);
         }
         threshold = newThr;
-        @SuppressWarnings({"rawtypes", "unchecked"})
+        @SuppressWarnings({"unchecked"})
         Node<K, V>[] newTab = (Node<K, V>[]) new Node[newCap];
         table = newTab;
         if (oldTab != null) {
@@ -534,6 +541,45 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         }
     }
 
+
+    /**
+     * Copies all of the mappings from the specified map to this map.
+     * These mappings will replace any mappings that this map had for
+     * any of the keys currently in the specified map.
+     *
+     * @param m mappings to be stored in this map
+     * @throws NullPointerException if the specified map is null
+     */
+    public void putAll(Map<? extends K, ? extends V> m) {
+        putMapEntries(m, true);
+    }
+
+    /**
+     * Removes the mapping for the specified key from this map if present.
+     *
+     * @param  key key whose mapping is to be removed from the map
+     * @return the previous value associated with <tt>key</tt>, or
+     *         <tt>null</tt> if there was no mapping for <tt>key</tt>.
+     *         (A <tt>null</tt> return can also indicate that the map
+     *         previously associated <tt>null</tt> with <tt>key</tt>.)
+     */
+    public V remove(Object key) {
+        Node<K,V> e;
+        return (e = removeNode(hash(key), key, null, false, true)) == null ?
+                null : e.value;
+    }
+
+
+    /**
+     * Implements Map.remove and related methods.
+     *
+     * @param hash hash for key
+     * @param key the key
+     * @param value the value to match if matchValue, else ignored
+     * @param matchValue if true only remove if value is equal
+     * @param movable if false do not move other nodes while removing
+     * @return the node, or null if none
+     */
     final Node<K, V> removeNode(int hash, Object key, Object value,
                                 boolean matchValue, boolean movable) {
         Node<K, V>[] tab;
@@ -583,6 +629,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      * Removes all of the mappings from this map.
      * The map will be empty after this call returns.
      */
+    @SuppressWarnings("ExplicitArrayFilling")
     public void clear() {
         Node<K, V>[] tab;
         modCount++;
@@ -640,7 +687,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         }
         return ks;
     }
-
+    
     final class KeySet extends AbstractSet<K> {
         public final int size() {
             return size;
@@ -712,7 +759,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         }
 
         public final void clear() {
-            this.clear();
+            HashMap.this.clear();
         }
 
         public final Iterator<V> iterator() {
@@ -762,7 +809,8 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      */
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        Set<Map.Entry<K,V>> es;
+        return (es = entrySet) == null ? (entrySet = new EntrySet()) : es;
     }
 
     final class EntrySet extends AbstractSet<Map.Entry<K, V>> {
@@ -771,7 +819,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         }
 
         public final void clear() {
-            this.clear();
+            HashMap.this.clear();
         }
 
         public final Iterator<Map.Entry<K, V>> iterator() {
@@ -955,7 +1003,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      */
     @Override
     public V putIfAbsent(K key, V value) {
-        return null;
+        return putVal(hash(key), key, value, true, true);
     }
 
     /**
@@ -1132,14 +1180,62 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      * or atomicity properties of this method. Any implementation providing
      * atomicity guarantees must override this method and document its
      * concurrency properties. In particular, all implementations of
-     * subinterface {@link ConcurrentMap} must document
+     * subinterface {@link java.util.concurrent.ConcurrentMap} must document
      * whether the function is applied once atomically only if the value is not
      * present.
      * @since 1.8
      */
     @Override
     public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
-        return null;
+        if (mappingFunction == null)
+            throw new NullPointerException();
+        int hash = hash(key);
+        Node<K,V>[] tab; Node<K,V> first; int n, i;
+        int binCount = 0;
+        TreeNode<K,V> t = null;
+        Node<K,V> old = null;
+        if (size > threshold || (tab = table) == null ||
+                (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((first = tab[i = (n - 1) & hash]) != null) {
+            if (first instanceof TreeNode)
+                old = (t = (TreeNode<K,V>)first).getTreeNode(hash, key);
+            else {
+                Node<K,V> e = first; K k;
+                do {
+                    if (e.hash == hash &&
+                            ((k = e.key) == key || (key != null && key.equals(k)))) {
+                        old = e;
+                        break;
+                    }
+                    ++binCount;
+                } while ((e = e.next) != null);
+            }
+            V oldValue;
+            if (old != null && (oldValue = old.value) != null) {
+                afterNodeAccess(old);
+                return oldValue;
+            }
+        }
+        V v = mappingFunction.apply(key);
+        if (v == null) {
+            return null;
+        } else if (old != null) {
+            old.value = v;
+            afterNodeAccess(old);
+            return v;
+        }
+        else if (t != null)
+            t.putTreeVal(this, tab, hash, key, v);
+        else {
+            tab[i] = newNode(hash, key, v, first);
+            if (binCount >= TREEIFY_THRESHOLD - 1)
+                treeifyBin(tab, hash);
+        }
+        ++modCount;
+        ++size;
+        afterNodeInsertion(true);
+        return v;
     }
 
     /**
@@ -1181,13 +1277,28 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      * or atomicity properties of this method. Any implementation providing
      * atomicity guarantees must override this method and document its
      * concurrency properties. In particular, all implementations of
-     * subinterface {@link ConcurrentMap} must document
+     * subinterface {@link java.util.concurrent.ConcurrentMap} must document
      * whether the function is applied once atomically only if the value is not
      * present.
      * @since 1.8
      */
     @Override
     public V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        if (remappingFunction == null)
+            throw new NullPointerException();
+        Node<K,V> e; V oldValue;
+        int hash = hash(key);
+        if ((e = getNode(hash, key)) != null &&
+                (oldValue = e.value) != null) {
+            V v = remappingFunction.apply(key, oldValue);
+            if (v != null) {
+                e.value = v;
+                afterNodeAccess(e);
+                return v;
+            }
+            else
+                removeNode(hash, key, null, false, true);
+        }
         return null;
     }
 
@@ -1242,14 +1353,61 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      * or atomicity properties of this method. Any implementation providing
      * atomicity guarantees must override this method and document its
      * concurrency properties. In particular, all implementations of
-     * subinterface {@link ConcurrentMap} must document
+     * subinterface {@link java.util.concurrent.ConcurrentMap} must document
      * whether the function is applied once atomically only if the value is not
      * present.
      * @since 1.8
      */
     @Override
     public V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
-        return null;
+        if (remappingFunction == null)
+            throw new NullPointerException();
+        int hash = hash(key);
+        Node<K,V>[] tab; Node<K,V> first; int n, i;
+        int binCount = 0;
+        TreeNode<K,V> t = null;
+        Node<K,V> old = null;
+        if (size > threshold || (tab = table) == null ||
+                (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((first = tab[i = (n - 1) & hash]) != null) {
+            if (first instanceof TreeNode)
+                old = (t = (TreeNode<K,V>)first).getTreeNode(hash, key);
+            else {
+                Node<K,V> e = first; K k;
+                do {
+                    if (e.hash == hash &&
+                            ((k = e.key) == key || (key != null && key.equals(k)))) {
+                        old = e;
+                        break;
+                    }
+                    ++binCount;
+                } while ((e = e.next) != null);
+            }
+        }
+        V oldValue = (old == null) ? null : old.value;
+        V v = remappingFunction.apply(key, oldValue);
+        if (old != null) {
+            if (v != null) {
+                old.value = v;
+                afterNodeAccess(old);
+            }
+            else
+                removeNode(hash, key, null, false, true);
+        }
+        else if (v != null) {
+            if (t != null)
+                t.putTreeVal(this, tab, hash, key, v);
+            else {
+                tab[i] = newNode(hash, key, v, first);
+                if (binCount >= TREEIFY_THRESHOLD - 1)
+                    treeifyBin(tab, hash);
+            }
+            ++modCount;
+            ++size;
+            afterNodeInsertion(true);
+        }
+        return v;
     }
 
     /**
@@ -1303,19 +1461,180 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      * or atomicity properties of this method. Any implementation providing
      * atomicity guarantees must override this method and document its
      * concurrency properties. In particular, all implementations of
-     * subinterface {@link ConcurrentMap} must document
+     * subinterface {@link java.util.concurrent.ConcurrentMap} must document
      * whether the function is applied once atomically only if the value is not
      * present.
      * @since 1.8
      */
+    @SuppressWarnings("ConstantConditions")
     @Override
     public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
-        return null;
+        if (value == null)
+            throw new NullPointerException();
+        if (remappingFunction == null)
+            throw new NullPointerException();
+        int hash = hash(key);
+        Node<K,V>[] tab; Node<K,V> first; int n, i;
+        int binCount = 0;
+        TreeNode<K,V> t = null;
+        Node<K,V> old = null;
+        if (size > threshold || (tab = table) == null ||
+                (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((first = tab[i = (n - 1) & hash]) != null) {
+            if (first instanceof TreeNode)
+                old = (t = (TreeNode<K,V>)first).getTreeNode(hash, key);
+            else {
+                Node<K,V> e = first; K k;
+                do {
+                    if (e.hash == hash &&
+                            ((k = e.key) == key || (key != null && key.equals(k)))) {
+                        old = e;
+                        break;
+                    }
+                    ++binCount;
+                } while ((e = e.next) != null);
+            }
+        }
+        if (old != null) {
+            V v;
+            if (old.value != null)
+                v = remappingFunction.apply(old.value, value);
+            else
+                v = value;
+            if (v != null) {
+                old.value = v;
+                afterNodeAccess(old);
+            }
+            else
+                removeNode(hash, key, null, false, true);
+            return v;
+        }
+        if (value != null) {
+            if (t != null)
+                t.putTreeVal(this, tab, hash, key, value);
+            else {
+                tab[i] = newNode(hash, key, value, first);
+                if (binCount >= TREEIFY_THRESHOLD - 1)
+                    treeifyBin(tab, hash);
+            }
+            ++modCount;
+            ++size;
+            afterNodeInsertion(true);
+        }
+        return value;
+    }
+
+    /* ------------------------------------------------------------ */
+    // Cloning and serialization
+
+    /**
+     * Returns a shallow copy of this <tt>HashMap</tt> instance: the keys and
+     * values themselves are not cloned.
+     *
+     * @return a shallow copy of this map
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object clone() {
+        HashMap<K,V> result;
+        try {
+            result = (HashMap<K,V>)super.clone();
+        } catch (CloneNotSupportedException e) {
+            // this shouldn't happen, since we are Cloneable
+            throw new InternalError(e);
+        }
+        result.reinitialize();
+        result.putMapEntries(this, false);
+        return result;
+    }
+
+    // These methods are also used when serializing HashSets
+    @SuppressWarnings("unused")
+    final float loadFactor() { return loadFactor; }
+    final int capacity() {
+        return (table != null) ? table.length :
+                (threshold > 0) ? threshold :
+                        DEFAULT_INITIAL_CAPACITY;
+    }
+
+    /**
+     * Save the state of the <tt>HashMap</tt> instance to a stream (i.e.,
+     * serialize it).
+     *
+     * @serialData The <i>capacity</i> of the HashMap (the length of the
+     *             bucket array) is emitted (int), followed by the
+     *             <i>size</i> (an int, the number of key-value
+     *             mappings), followed by the key (Object) and value (Object)
+     *             for each key-value mapping.  The key-value mappings are
+     *             emitted in no particular order.
+     */
+    private void writeObject(java.io.ObjectOutputStream s)
+            throws IOException {
+        int buckets = capacity();
+        // Write out the threshold, loadfactor, and any hidden stuff
+        s.defaultWriteObject();
+        s.writeInt(buckets);
+        s.writeInt(size);
+        internalWriteEntries(s);
+    }
+
+    /**
+     * Reconstitutes this map from a stream (that is, deserializes it).
+     * @param s the stream
+     * @throws ClassNotFoundException if the class of a serialized object
+     *         could not be found
+     * @throws IOException if an I/O error occurs
+     */
+    private void readObject(java.io.ObjectInputStream s)
+            throws IOException, ClassNotFoundException {
+        // Read in the threshold (ignored), loadfactor, and any hidden stuff
+        s.defaultReadObject();
+        reinitialize();
+        if (loadFactor <= 0 || Float.isNaN(loadFactor))
+            throw new InvalidObjectException("Illegal load factor: " +
+                    loadFactor);
+        s.readInt();                // Read and ignore number of buckets
+        int mappings = s.readInt(); // Read number of mappings (size)
+        if (mappings < 0)
+            throw new InvalidObjectException("Illegal mappings count: " +
+                    mappings);
+        else if (mappings > 0) { // (if zero, use defaults)
+            // Size the table using given load factor only if within
+            // range of 0.25...4.0
+            float lf = Math.min(Math.max(0.25f, loadFactor), 4.0f);
+            float fc = (float)mappings / lf + 1.0f;
+            int cap = ((fc < DEFAULT_INITIAL_CAPACITY) ?
+                    DEFAULT_INITIAL_CAPACITY :
+                    (fc >= MAXIMUM_CAPACITY) ?
+                            MAXIMUM_CAPACITY :
+                            tableSizeFor((int)fc));
+            float ft = (float)cap * lf;
+            threshold = ((cap < MAXIMUM_CAPACITY && ft < MAXIMUM_CAPACITY) ?
+                    (int)ft : Integer.MAX_VALUE);
+
+            // Check Map.Entry[].class since it's the nearest public type to
+            // what we're actually creating.
+            SharedSecrets.getJavaOISAccess().checkArray(s, Map.Entry[].class, cap);
+            @SuppressWarnings({"unchecked"})
+            Node<K,V>[] tab = (Node<K,V>[])new Node[cap];
+            table = tab;
+
+            // Read the keys and values, and put the mappings in the HashMap
+            for (int i = 0; i < mappings; i++) {
+                @SuppressWarnings("unchecked")
+                K key = (K) s.readObject();
+                @SuppressWarnings("unchecked")
+                V value = (V) s.readObject();
+                putVal(hash(key), key, value, false, false);
+            }
+        }
     }
 
     /* ------------------------------------------------------------ */
     // iterators
 
+    @SuppressWarnings("StatementWithEmptyBody")
     abstract class HashIterator {
         Node<K, V> next;        // next entry to return
         Node<K, V> current;     // current entry
@@ -1418,6 +1737,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
             return hi;
         }
 
+        @SuppressWarnings("RedundantCast")
         public final long estimateSize() {
             getFence(); // force init
             return (long) est;
@@ -1690,6 +2010,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         }
     }
 
+    @SuppressWarnings({"ConstantConditions", "SimplifiableConditionalExpression"})
     static final class TreeNode<K, V> extends LinkedHashMap.Entry<K, V> {
         TreeNode<K, V> parent;  // red-black tree links
         TreeNode<K, V> left;
@@ -2249,6 +2570,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         /**
          * Recursive invariant check
          */
+        @SuppressWarnings("RedundantIfStatement")
         static <K, V> boolean checkInvariants(TreeNode<K, V> t) {
             TreeNode<K, V> tp = t.parent, tl = t.left, tr = t.right,
                     tb = t.prev, tn = (TreeNode<K, V>) t.next;
