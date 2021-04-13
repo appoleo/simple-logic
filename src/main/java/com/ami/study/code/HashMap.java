@@ -455,6 +455,10 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
     }
 
     /**
+     * 重新分配容量
+     *
+     * 初始化或两倍扩容
+     *
      * Initializes or doubles table size.  If null, allocates in
      * accord with initial capacity target held in field threshold.
      * Otherwise, because we are using power-of-two expansion, the
@@ -469,18 +473,22 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
         int oldThr = threshold;
         int newCap, newThr = 0;
         if (oldCap > 0) {
+            // 如果原始容量已经达到最大容量，则不进行扩容
             if (oldCap >= MAXIMUM_CAPACITY) {
                 threshold = Integer.MAX_VALUE;
                 return oldTab;
             } else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
                     oldCap >= DEFAULT_INITIAL_CAPACITY)
+                // 当二倍扩容后容量没有达到最大容量，并且原容量大于等于默认初始容量，则进行二倍扩容
                 newThr = oldThr << 1; // double threshold
         } else if (oldThr > 0) // initial capacity was placed in threshold
             newCap = oldThr;
         else {               // zero initial threshold signifies using defaults
+            // 原始容量和阈值都为0，则进行初始化
             newCap = DEFAULT_INITIAL_CAPACITY;
             newThr = (int) (DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
         }
+        // 此case为集合初始化后第一次resize
         if (newThr == 0) {
             float ft = (float) newCap * loadFactor;
             newThr = (newCap < MAXIMUM_CAPACITY && ft < (float) MAXIMUM_CAPACITY ?
@@ -495,10 +503,13 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
                 Node<K, V> e;
                 if ((e = oldTab[j]) != null) {
                     oldTab[j] = null;
+                    // 该位置未冲突
                     if (e.next == null)
                         newTab[e.hash & (newCap - 1)] = e;
+                    // 该位置为树
                     else if (e instanceof TreeNode)
                         ((TreeNode<K, V>) e).split(this, newTab, j, oldCap);
+                    // 该位置为链表
                     else { // preserve order
                         Node<K, V> loHead = null, loTail = null;
                         Node<K, V> hiHead = null, hiTail = null;
