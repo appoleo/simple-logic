@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 public class ObservableController {
 
     @Resource
-    private EventContainer eventContainer;
+    private EventContainer<TestEvent> eventContainer;
 
     @PostMapping("/listen")
     public void listen() {
