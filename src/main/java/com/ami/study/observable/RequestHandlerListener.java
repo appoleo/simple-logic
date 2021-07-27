@@ -9,7 +9,7 @@ import org.springframework.web.servlet.DispatcherServlet;
  * @author wangchendong
  * @date 2021/07/27
  */
-@Component
+@Component // 注册监听器，此方式需事件在ApplicationContext创建完成后才可注册成功，否则采用spring.factories方式
 public class RequestHandlerListener implements ApplicationListener<RequestHandledEvent> {
 
     /**
