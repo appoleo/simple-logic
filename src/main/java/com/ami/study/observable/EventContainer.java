@@ -23,8 +23,13 @@ public class EventContainer<E extends AppEvent> implements InitializingBean {
     @Resource
     private Map<String, AppListener<E>> listenerMap;
 
-    public Map<Class<E>, List<AppListener<E>>> eventListeners = new LinkedHashMap<>(16);
+    private final Map<Class<E>, List<AppListener<E>>> eventListeners = new LinkedHashMap<>(16);
 
+    /**
+     * 注册监听
+     *
+     * @throws Exception throw exception while some wrong on registering
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         log.info("register listeners begin");
