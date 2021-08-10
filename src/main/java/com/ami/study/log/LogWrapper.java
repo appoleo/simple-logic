@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogWrapper {
 
-    public static void log(String format, LogStyle logColor, Object... args) {
-        log.info(logColor.dye(format), args);
+    public static void log(String format, LogStyle logStyle, Object... args) {
+        log.info(logStyle.dye(format), args);
     }
 
     public static void log(String format, Object... args) {
