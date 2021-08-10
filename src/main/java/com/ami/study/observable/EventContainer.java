@@ -1,5 +1,7 @@
 package com.ami.study.observable;
 
+import com.ami.study.log.LogStyle;
+import com.ami.study.log.LogWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
@@ -51,7 +53,14 @@ public class EventContainer<E extends AppEvent> implements InitializingBean {
                 count++;
             }
         }
-        log.info("register listeners end, {} listeners have registered", count);
+        LogWrapper.log("register listeners end, {} listeners have registered", LogStyle.BLACK, count);
+        LogWrapper.log("register listeners end, {} listeners have registered", LogStyle.RED, count);
+        LogWrapper.log("register listeners end, {} listeners have registered", LogStyle.GREEN, count);
+        LogWrapper.log("register listeners end, {} listeners have registered", LogStyle.YELLOW, count);
+        LogWrapper.log("register listeners end, {} listeners have registered", LogStyle.BLUE, count);
+        LogWrapper.log("register listeners end, {} listeners have registered", LogStyle.PURPLE, count);
+        LogWrapper.log("register listeners end, {} listeners have registered", LogStyle.SKY, count);
+        LogWrapper.log("register listeners end, {} listeners have registered", LogStyle.WHITE, count);
     }
 
     public void publish(E event) {
