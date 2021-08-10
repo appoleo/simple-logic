@@ -23,6 +23,8 @@ public class EventContainer<E extends AppEvent> implements InitializingBean {
     @Resource
     private Map<String, AppListener<E>> listenerMap;
 
+    private int count;
+
     private final Map<Class<E>, List<AppListener<E>>> eventListeners = new LinkedHashMap<>(16);
 
     /**
@@ -46,9 +48,10 @@ public class EventContainer<E extends AppEvent> implements InitializingBean {
                     appListeners.add(listener);
                     eventListeners.put(parameterType, appListeners);
                 }
+                count++;
             }
         }
-        log.info("register listeners end");
+        log.info("register listeners end, {} listeners have registered", count);
     }
 
     public void publish(E event) {
