@@ -5,7 +5,7 @@ package com.ami.study.thinking.refcount;
  */
 class Composing {
 
-    private Shared shared;
+    private final Shared shared;
 
     private static long counter = 0;
 
@@ -18,7 +18,7 @@ class Composing {
     }
 
     protected void dispose() {
-        System.out.println("disposing" + this);
+        System.out.println("disposing " + this);
         shared.dispose();
     }
 

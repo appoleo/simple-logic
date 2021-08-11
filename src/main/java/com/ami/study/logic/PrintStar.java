@@ -64,8 +64,8 @@ public class PrintStar {
 
         // 外层循环控制行数，内层循环控制打印内容
         for (int i = max; i > 0; i--) {
-            for (int j = 0; j < arr.length; j++) {
-                if (arr[j] >= i) {
+            for (int k : arr) {
+                if (k >= i) {
                     System.out.print("* ");
                 } else {
                     System.out.print("  ");

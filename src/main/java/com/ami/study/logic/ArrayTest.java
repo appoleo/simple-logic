@@ -8,14 +8,13 @@ import java.util.stream.Stream;
 /**
  * @author appoleo
  */
-@SuppressWarnings({"UnusedReturnValue", "ResultOfMethodCallIgnored"})
+@SuppressWarnings({"UnusedReturnValue", "ResultOfMethodCallIgnored", "SameParameterValue"})
 public class ArrayTest {
 
     /**
      * how to find the element in array
      */
     public static void main(String[] args) {
-        // String[] arr = new String[]{"沉", "默", "王", "二", "真牛逼"};
         String[] arr = new String[1000];
         Random s = new Random();
         for (int i = 0; i < 1000; i++) {

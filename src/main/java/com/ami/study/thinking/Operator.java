@@ -41,19 +41,12 @@ public class Operator {
 
     @Test
     public void bitOperation() {
-        boolean b = false ^ true;
-        System.out.println(b);
         System.out.println(~7);
-        System.out.println();
+        System.out.println(Runtime.getRuntime().availableProcessors());
     }
 
     @Test
     public void booleanTest() {
-        boolean a = false;
-        boolean b = true;
-        while (a = b) { // 无限循环
-            System.out.println(1);
-        }
     }
 
     public void optionalTest() {
