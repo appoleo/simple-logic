@@ -30,27 +30,31 @@ public class RadixSort extends MySort {
      */
     private static int[] sort(int[] arr) {
         int[] result = new int[arr.length];
+        // 存放各个位数上的数字出现的次数，并计算出右边界
         int[] count = new int[10];
-
-        for (int i = 0; i < 3; i++) {
+        // 获取最大位数
+        int max = findMax(arr);
+        int numLength = getNumLength(max);
+        // 根据最大位数进行遍历，依次对个位、十位...进行排序
+        for (int i = 0; i < numLength; i++) {
             int division = (int) Math.pow(10, i);
+            // 计算该位出现次数
             for (int k : arr) {
                 int num = k / division % 10;
                 count[num]++;
             }
-
+            // 计算该位在arr中右边界
             for (int j = 1; j < count.length; j++) {
                 count[j] += count[j - 1];
             }
-
+            // 由右向左排序
             for (int j = arr.length - 1; j >= 0; j--) {
                 result[--count[arr[j] / division % 10]] = arr[j];
             }
-
+            // 按该位排序好的序列复制到结果中
             System.arraycopy(result, 0, arr, 0, arr.length);
             Arrays.fill(count, 0);
         }
-
         return arr;
     }
 
@@ -59,7 +63,7 @@ public class RadixSort extends MySort {
         int[] arr = new int[10000];
         Random random = new Random();
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt(900) + 100;
+            arr[i] = random.nextInt(1000);
         }
         int[] arrCopy = new int[arr.length];
         System.arraycopy(arr, 0, arrCopy, 0, arr.length);
@@ -76,5 +80,9 @@ public class RadixSort extends MySort {
         }
 
         Assert.assertSame(true, same);
+    }
+
+    private static int getNumLength(int num) {
+        return (num = Math.abs(num)) == 0 ? 1 : (int) Math.log10(num) + 1;
     }
 }
