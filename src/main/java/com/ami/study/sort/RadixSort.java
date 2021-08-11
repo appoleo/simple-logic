@@ -81,8 +81,4 @@ public class RadixSort extends MySort {
 
         Assert.assertSame(true, same);
     }
-
-    private static int getNumLength(int num) {
-        return (num = Math.abs(num)) == 0 ? 1 : (int) Math.log10(num) + 1;
-    }
 }

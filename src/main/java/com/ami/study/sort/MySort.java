@@ -35,4 +35,8 @@ public class MySort {
         }
         return arr[max];
     }
+
+    static int getNumLength(int num) {
+        return (num = Math.abs(num)) == 0 ? 1 : (int) Math.log10(num) + 1;
+    }
 }
