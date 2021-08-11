@@ -8,7 +8,7 @@ import java.util.Random;
  * @author wangchendong
  * @date 2021/01/27
  */
-@SuppressWarnings({"ResultOfMethodCallIgnored", "UnusedReturnValue"})
+@SuppressWarnings({"ResultOfMethodCallIgnored", "UnusedReturnValue", "unused"})
 public class MySort {
 
     static void swap(int[] arr, int i, int j) {
@@ -64,7 +64,7 @@ public class MySort {
         }
         long one = System.currentTimeMillis();
         for (int i : arr) {
-            getNumLength1(i);
+            getNumLength3(i);
         }
         long two = System.currentTimeMillis();
         System.out.println(two - one);
@@ -74,7 +74,7 @@ public class MySort {
         long three = System.currentTimeMillis();
         System.out.println(three - two);
         for (int i : arr) {
-            getNumLength3(i);
+            getNumLength1(i);
         }
         long four = System.currentTimeMillis();
         System.out.println(four - three);
@@ -86,16 +86,129 @@ public class MySort {
     }
 
     static int getNumLength3(int num) {
-        if ((num = Math.abs(num)) < 100000) {
+        if (num < 100000) {
             // 5 or less
-            return num < 100 ? (num < 10 ? 1 : 2) : (num < 1000 ? 3 : num < 10000 ? 4 : 5);
+            if (num < 100) {
+                // 1 or 2
+                if (num < 10)
+                    return 1;
+                else
+                    return 2;
+            } else {
+                // 3 or 4 or 5
+                if (num < 1000)
+                    return 3;
+                else {
+                    // 4 or 5
+                    if (num < 10000)
+                        return 4;
+                    else
+                        return 5;
+                }
+            }
         } else {
             // 6 or more
-            return num < 10000000 ? (num < 1000000 ? 6 : 7) : (num < 100000000 ? 8 : num < 1000000000 ? 9 : 10);
+            if (num < 10000000) {
+                // 6 or 7
+                if (num < 1000000)
+                    return 6;
+                else
+                    return 7;
+            } else {
+                // 8 to 10
+                if (num < 100000000)
+                    return 8;
+                else {
+                    // 9 or 10
+                    if (num < 1000000000)
+                        return 9;
+                    else
+                        return 10;
+                }
+            }
         }
     }
 
     static int getNumLength4(int num) {
         return String.valueOf(Math.abs(num)).length();
+    }
+
+    public static int numberOfDigits(long num) {
+        // Guessing 4-digit numbers will be more probable.
+        // They are set in the first branch.
+        if (num < 10000L) { // from 1 to 4
+            if (num < 100L) { // 1 or 2
+                if (num < 10L) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+            } else { // 3 or 4
+                if (num < 1000L) {
+                    return 3;
+                } else {
+                    return 4;
+                }
+            }
+        } else { // from 5 a 20 (albeit longs can't have more than 18 or 19)
+            if (num < 1000000000000L) { // from 5 to 12
+                if (num < 100000000L) { // from 5 to 8
+                    if (num < 1000000L) { // 5 or 6
+                        if (num < 100000L) {
+                            return 5;
+                        } else {
+                            return 6;
+                        }
+                    } else { // 7 u 8
+                        if (num < 10000000L) {
+                            return 7;
+                        } else {
+                            return 8;
+                        }
+                    }
+                } else { // from 9 to 12
+                    if (num < 10000000000L) { // 9 or 10
+                        if (num < 1000000000L) {
+                            return 9;
+                        } else {
+                            return 10;
+                        }
+                    } else { // 11 or 12
+                        if (num < 100000000000L) {
+                            return 11;
+                        } else {
+                            return 12;
+                        }
+                    }
+                }
+            } else { // from 13 to ... (18 or 20)
+                if (num < 10000000000000000L) { // from 13 to 16
+                    if (num < 100000000000000L) { // 13 or 14
+                        if (num < 10000000000000L) {
+                            return 13;
+                        } else {
+                            return 14;
+                        }
+                    } else { // 15 or 16
+                        if (num < 1000000000000000L) {
+                            return 15;
+                        } else {
+                            return 16;
+                        }
+                    }
+                } else { // from 17 to ...¿20?
+                    if (num < 1000000000000000000L) { // 17 or 18
+                        if (num < 100000000000000000L) {
+                            return 17;
+                        } else {
+                            return 18;
+                        }
+                    } else { // 19? Can it be?
+                        // 10000000000000000000L isn't a valid long.
+                        return 19;
+                    }
+                }
+            }
+        }
     }
 }
