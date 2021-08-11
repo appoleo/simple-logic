@@ -34,7 +34,7 @@ public class RadixSort extends MySort {
         int[] count = new int[10];
         // 获取最大位数
         int max = findMax(arr);
-        int numLength = getNumLength(max);
+        int numLength = getNumLength3(max);
         // 根据最大位数进行遍历，依次对个位、十位...进行排序
         for (int i = 0; i < numLength; i++) {
             int division = (int) Math.pow(10, i);
