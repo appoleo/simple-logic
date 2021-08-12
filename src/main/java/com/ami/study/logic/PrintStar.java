@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 /**
  * 输入一个正整数n（暂不考虑非法输入），输出需求样式内容（参照下面示例）
- * 随机生成n个整数[1~10]，打印索引，由0开始，最大为9，再复位到0开始
+ * 随机生成n个整数[1~9]，打印索引，由0开始，最大为9，再复位到0开始
  * 每个索引对应的列上打印对应随机数字个数的“*”
  * 索引与*之间用“-”隔开
  *
@@ -51,7 +51,7 @@ public class PrintStar {
         int[] arr = new int[n];
 
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = r.nextInt(10) + 1;
+            arr[i] = r.nextInt(9) + 1;
         }
 
         // “*”的行数为数组最大元素值
@@ -73,6 +73,21 @@ public class PrintStar {
             }
             System.out.println();
         }
+
+        // 控制‘-’的打印
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println("-");
+            } else {
+                System.out.print("--");
+            }
+        }
+
+        // 打印数量
+        for (int j : arr) {
+            System.out.print(j + " ");
+        }
+        System.out.println();
 
         // 控制‘-’的打印
         for (int i = 0; i < arr.length; i++) {
