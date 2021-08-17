@@ -60,7 +60,7 @@ public class BinaryTree {
     }
 
     /**
-     * 中序打印 - 递归
+     * 后序打印 - 递归
      *
      * @param head 头节点
      */
