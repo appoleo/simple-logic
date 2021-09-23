@@ -3,17 +3,15 @@ package com.ami.study.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import springfox.documentation.RequestHandler;
+import springfox.documentation.builders.BuilderDefaults;
 import springfox.documentation.spi.service.RequestHandlerCombiner;
+import springfox.documentation.spi.service.contexts.Orderings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.stream.Collectors.toList;
-import static springfox.documentation.RequestHandler.sortedPaths;
-import static springfox.documentation.builders.BuilderDefaults.nullToEmptyList;
-import static springfox.documentation.spi.service.contexts.Orderings.byPatternsCondition;
+import java.util.stream.Collectors;
 
 /**
  * @author wangchendong
@@ -27,9 +25,9 @@ public class RequestHandlerCombinerImpl implements RequestHandlerCombiner {
     public List<RequestHandler> combine(List<RequestHandler> source) {
         List<RequestHandler> combined = new ArrayList<RequestHandler>();
         Map<String, List<RequestHandler>> byPath = new HashMap<>();
-        log.debug("Total number of request handlers {}", nullToEmptyList(source).size());
-        for (RequestHandler each : nullToEmptyList(source)) {
-            String pathKey = sortedPaths(each.getPatternsCondition());
+        log.debug("Total number of request handlers {}", BuilderDefaults.nullToEmptyList(source).size());
+        for (RequestHandler each : BuilderDefaults.nullToEmptyList(source)) {
+            String pathKey = RequestHandler.sortedPaths(each.getPatternsCondition());
             log.debug("Adding key: {}, {}", pathKey, each.toString());
             byPath.putIfAbsent(pathKey, new ArrayList<>());
             byPath.get(pathKey).add(each);
@@ -39,7 +37,7 @@ public class RequestHandlerCombinerImpl implements RequestHandlerCombiner {
         }
         log.debug("Combined number of request handlers {}", combined.size());
         return combined.stream()
-                .sorted(byPatternsCondition())
-                .collect(toList());
+                .sorted(Orderings.byPatternsCondition())
+                .collect(Collectors.toList());
     }
 }
