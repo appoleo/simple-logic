@@ -24,7 +24,7 @@ public class WebContainerListener implements ApplicationListener<WebServerInitia
     @Override
     public void onApplicationEvent(WebServerInitializedEvent event) {
         try {
-            log.info("http://" + InetAddress.getLocalHost().getHostAddress()
+            log.info("swagger 文档地址：http://" + InetAddress.getLocalHost().getHostAddress()
                     + ":" + event.getWebServer().getPort() + "/logic/doc.html");
         } catch (UnknownHostException e) {
             e.printStackTrace();
