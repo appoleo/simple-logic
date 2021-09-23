@@ -21,14 +21,22 @@ import java.util.stream.Collectors;
 @Component
 public class RequestHandlerCombinerImpl implements RequestHandlerCombiner {
 
+    /**
+     * 重写默认方法，提供的默认方法中会过滤掉path相同的接口，只会保留一个
+     *
+     * @param source api列表
+     * @return 排序后的api列表
+     * @see springfox.documentation.spring.web.plugins.DefaultRequestHandlerCombiner#combine(java.util.List)
+     */
+    @SuppressWarnings("JavadocReference")
     @Override
     public List<RequestHandler> combine(List<RequestHandler> source) {
-        List<RequestHandler> combined = new ArrayList<RequestHandler>();
+        List<RequestHandler> combined = new ArrayList<>();
         Map<String, List<RequestHandler>> byPath = new HashMap<>();
         log.debug("Total number of request handlers {}", BuilderDefaults.nullToEmptyList(source).size());
         for (RequestHandler each : BuilderDefaults.nullToEmptyList(source)) {
             String pathKey = RequestHandler.sortedPaths(each.getPatternsCondition());
-            log.debug("Adding key: {}, {}", pathKey, each.toString());
+            log.debug("Adding key: {}, {}", pathKey, each);
             byPath.putIfAbsent(pathKey, new ArrayList<>());
             byPath.get(pathKey).add(each);
         }
