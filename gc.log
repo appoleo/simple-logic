@@ -1,0 +1,16 @@
+OpenJDK 64-Bit Server VM (25.275-b01) for bsd-aarch64 JRE (Zulu 8.50.0.1017-CA-macos-aarch64) (1.8.0_275-b01), built on Nov 23 2020 04:03:55 by "zulu_re" with gcc Apple LLVM 12.0.0 (clang-1200.0.32.27)
+Memory: 16k page, physical 16777216k(259552k free)
+
+/proc/meminfo:
+
+CommandLine flags: -XX:InitialHeapSize=10485760 -XX:MaxHeapSize=10485760 -XX:MaxNewSize=5242880 -XX:NewSize=5242880 -XX:OldPLABSize=16 -XX:PretenureSizeThreshold=10485760 -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:SurvivorRatio=8 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseConcMarkSweepGC -XX:+UseParNewGC 
+0.075: [GC (Allocation Failure) 0.075: [ParNew: 3627K->512K(4608K), 0.0014073 secs] 3627K->804K(15872K), 0.0014876 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+0.076: [GC (Allocation Failure) 0.076: [ParNew: 3662K->0K(4608K), 0.0010683 secs] 3955K->804K(15872K), 0.0010959 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+Heap
+ par new generation   total 4608K, used 2254K [0x00000007bf000000, 0x00000007bf500000, 0x00000007bf500000)
+  eden space 4096K,  55% used [0x00000007bf000000, 0x00000007bf2339c8, 0x00000007bf400000)
+  from space 512K,   0% used [0x00000007bf400000, 0x00000007bf400000, 0x00000007bf480000)
+  to   space 512K,   0% used [0x00000007bf480000, 0x00000007bf480000, 0x00000007bf500000)
+ concurrent mark-sweep generation total 11264K, used 804K [0x00000007bf500000, 0x00000007c0000000, 0x00000007c0000000)
+ Metaspace       used 3187K, capacity 4500K, committed 4864K, reserved 1056768K
+  class space    used 339K, capacity 388K, committed 512K, reserved 1048576K

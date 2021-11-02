@@ -21,4 +21,12 @@ public class GCConfiguration implements InitializingBean {
         List<GarbageCollectorMXBean> garbageCollectorMXBeans = ManagementFactory.getGarbageCollectorMXBeans();
         garbageCollectorMXBeans.forEach(i -> System.out.println(i.getName()));
     }
+
+    public static void main(String[] args) {
+        byte[] bytes = new byte[1024 * 1024];
+        bytes = new byte[1024 * 1024];
+        bytes = new byte[1024 * 1024];
+        bytes = null;
+        byte[] bytes1 = new byte[2 * 1024 * 1024];
+    }
 }
