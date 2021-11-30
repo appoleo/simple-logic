@@ -1,2 +1,2 @@
-#org.springframework.context.ApplicationListener=\
-#  com.ami.study.observable.RequestHandlerListener
+org.springframework.context.ApplicationListener=\
+  com.ami.study.observable.WebContainerListener

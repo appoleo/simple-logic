@@ -30,10 +30,10 @@ public class Knife4jConfiguration {
                         .contact(new Contact("appoleo", "", ""))
                         .version("1.0")
                         .build())
-                //分组名称
+                // 分组名称
                 .groupName("文档")
                 .select()
-                //这里指定Controller扫描包路径
+                // 这里指定Controller扫描包路径
                 .apis(RequestHandlerSelectors.basePackage("com.ami.study.controller"))
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())

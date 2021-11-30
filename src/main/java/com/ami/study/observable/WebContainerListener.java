@@ -3,7 +3,6 @@ package com.ami.study.observable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -13,7 +12,6 @@ import java.net.UnknownHostException;
  * @date 2021/09/23
  */
 @Slf4j
-@Component
 public class WebContainerListener implements ApplicationListener<WebServerInitializedEvent> {
 
     /**
