@@ -9,23 +9,24 @@ import java.util.Queue;
 public class TopK {
 
     public static void main(String[] args) {
-        int[] arr = {5, 4, 1, 3, 6, 2, 9, 0, 8, 7};
+        // int[] arr = {5, 4, 1, 3, 6, 2, 9, 0, 8, 7};
+        int[] arr = {3, 1, 2};
         TopK topK = new TopK();
-        int[] leaseNumbersByArray = topK.getLeaseNumbersByArray(arr, 4);
+        int[] leaseNumbersByArray = topK.getLeaseNumbersByArray(arr, 2);
         System.out.print("array: ");
         for (int j : leaseNumbersByArray) {
             System.out.print(j + " ");
         }
         System.out.println();
 
-        int[] leastNumbersByQuickSelect = topK.getLeastNumbersByQuickSelect(arr, 4);
+        int[] leastNumbersByQuickSelect = topK.getLeastNumbersByQuickSelect(arr, 2);
         System.out.print("quick select: ");
         for (int j : leastNumbersByQuickSelect) {
             System.out.print(j + " ");
         }
         System.out.println();
 
-        int[] leastNumbersByHeap = topK.getLeastNumbersByHeap(arr, 4);
+        int[] leastNumbersByHeap = topK.getLeastNumbersByHeap(arr, 2);
         System.out.print("heap: ");
         for (int j : leastNumbersByHeap) {
             System.out.print(j + " ");
@@ -115,7 +116,7 @@ public class TopK {
         if (k < m) {
             // 最小的 k 个数一定在前 m 个数中，递归划分
             partitionArray(arr, lo, m - 1, k);
-        } else if (k > m) {
+        } else if (k > m + 1) {
             // 在右侧数组中寻找最小的 k-m 个数
             partitionArray(arr, m + 1, hi, k);
         }
