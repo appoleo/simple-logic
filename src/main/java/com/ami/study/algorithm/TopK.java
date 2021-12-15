@@ -9,8 +9,8 @@ import java.util.Queue;
 public class TopK {
 
     public static void main(String[] args) {
-        // int[] arr = {5, 4, 1, 3, 6, 2, 9, 0, 8, 7};
-        int[] arr = {3, 1, 2};
+        int[] arr = {5, 4, 1, 3, 6, 2, 9, 0, 8, 7};
+        // int[] arr = {3, 1, 2};
         TopK topK = new TopK();
         int[] leaseNumbersByArray = topK.getLeaseNumbersByArray(arr, 2);
         System.out.print("array: ");

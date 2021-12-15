@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +28,7 @@ public class ParamController {
 
     @ApiOperation("测试参数封装1")
     @PostMapping(value = "/add", headers = "token=1")
-    public void listen1(Person person) {
+    public void listen1(@RequestBody Person person) {
         log.info("param1: {}", person);
         log.info("add event1 ...");
         eventContainer.publish(new TestEvent(person));
