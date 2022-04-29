@@ -28,11 +28,11 @@ public class CompletableFutureDemo {
         System.out.println(completableFuture.get());
     }
 
-    public static void main(String[] args) throws Exception {
-        // demo1();
-        // TimeUnit.SECONDS.sleep(5);
-        demo2();
-    }
+    // public static void main(String[] args) throws Exception {
+    //     // demo1();
+    //     // TimeUnit.SECONDS.sleep(5);
+    //     demo2();
+    // }
 
     static int getMoreData() {
         System.out.println("begin to start compute");
@@ -53,5 +53,40 @@ public class CompletableFutureDemo {
         });
         System.out.println(f.get());
         System.in.read();
+    }
+
+    public static void main(String[] args) throws Exception {
+        CompletableFuture<String> f1 = CompletableFuture
+                .supplyAsync(() -> {
+                    try {
+                        TimeUnit.SECONDS.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return "123";
+                });
+        CompletableFuture<String> f2 = CompletableFuture
+                .supplyAsync(() -> {
+                    try {
+                        TimeUnit.SECONDS.sleep(8);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return "456";
+                });
+        CompletableFuture<String> f3 = CompletableFuture
+                .supplyAsync(() -> {
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return "789";
+                });
+
+        CompletableFuture.allOf(f1, f2, f3).join();
+
+        System.out.println(f1.get() + f2.get() + f3.get());
+
     }
 }
